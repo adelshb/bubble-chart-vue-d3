@@ -12,7 +12,7 @@ import * as d3 from "d3";
 export default {
   name: 'Chart',
   props: {
-    benchmark_data: Array,
+    spotify_top50_2019: Array,
     },
   data: function() {
     return {
@@ -32,7 +32,6 @@ export default {
     }
   },  
   mounted: function() {
-    console.log("mounting child...")
 
     this.svgContainer = d3.select("#chart")
       .append("svg")
@@ -45,37 +44,35 @@ export default {
       .attr("transform", "translate(" + this.settings.margin.left + "," + this.settings.margin.top + ")")
       .call(d3.axisLeft(this.yScale));
 
-    this.chartWrapper = this.svgContainer
-      .append("g")
-      .attr("class", "chordWrapper")
-      .attr("transform", "translate(" + this.settings.margin.left + "," + this.settings.margin.top + ")");
+    // this.chartWrapper = this.svgContainer
+    //   .append("g")
+    //   .attr("class", "chordWrapper")
+    //   .attr("transform", "translate(" + this.settings.margin.left + "," + this.settings.margin.top + ")");
     },
   computed: {
-    avg_dom: function(){
-      console.log(this.benchmark_data.length)
-      var dom = d3.extent(this.benchmark_data, function(d) { return parseFloat(d.avg) ; })
-      console.log("computing avg dom", dom)
+    popularity_dom: function(){
+      console.log("computing popularity domain, data length...",this.spotify_top50_2019.length)
+      var dom = d3.extent(this.spotify_top50_2019, function(d) { return parseFloat(d.Popularity) ; })
       return dom
     },
     xScale: function() {
       let xScale = d3.scaleLinear()
       .range([0, this.settings.width])
-      //.domain([this.avg_dom[0], this.avg_dom[1]])
-      .domain(this.avg_dom)
+      .domain(this.popularity_dom)
       return xScale
     },
     yScale: function() {
       let yScale = d3.scaleLinear()
       .range([0, this.settings.height])
-      //.domain(d3.extent(this.benchmark_data, function(d) { return parseFloat(d.avg) ; }));
+      //.domain(d3.extent(this.spotify_top50_2019, function(d) { return parseFloat(d.) ; }));
       .domain([0, 4000])
       return yScale
     },
-    rScale: function (){
-      let rScale = d3.scaleSqrt()
-        .domain(d3.extent(this.benchmark_data, function(d) { return 5*d.depth_multiplier;}));
-      return rScale
-    }
+    // rScale: function (){
+    //   let rScale = d3.scaleSqrt()
+    //     .domain(d3.extent(this.spotify_top50_2019, function(d) { return 2*d.Length;}));
+    //   return rScale
+    // }
   }
 }
 </script>

@@ -1,7 +1,7 @@
-<template v-if="benchmark_data.length >0">
+<template>
   <div id="app">
     <Chart 
-      :benchmark_data="benchmark_data"
+      :spotify_top50_2019="spotify_top50_2019"
     />
   </div>
 </template>
@@ -20,21 +20,19 @@ export default {
   },
   data: function(){
     return {
-      benchmark_data: [],
+      spotify_top50_2019: []
     }
   },
   created: function() {
     var that = this 
 
-    d3.csv("benchmark.csv",
+    d3.csv("spotify_top50_2019.csv",
       function(data) {  
-        that.benchmark_data.push(data)
+        that.spotify_top50_2019.push(data)
       }
     );
 
-    console.log("creatingt parent: " , this.benchmark_data.length)
-    this.data_loaded = true
-    console.log(this.data_loaded)
+    console.log("parent created, data length: ", this.spotify_top50_2019.length)
   }
 }
 </script>
