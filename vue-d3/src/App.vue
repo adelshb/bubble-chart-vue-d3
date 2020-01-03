@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    <Chart 
+    <Chart
+      v-if="spotify_top50_2019.length > 0"
       :spotify_top50_2019="spotify_top50_2019"
     />
   </div>
@@ -24,16 +25,12 @@ export default {
     }
   },
   created: function() {
-    var that = this 
+    var that = this
 
-    d3.csv("spotify_top50_2019.csv",
-      function(data) {  
-        that.spotify_top50_2019.push(data)
-      }
-    );
-
-    console.log("parent created, data length: ", this.spotify_top50_2019.length)
-  }
+    d3.csv("spotify_top50_2019.csv", function(loadedRows) {
+      that.spotify_top50_2019.push(loadedRows)
+    });
+  },
 }
 </script>
 

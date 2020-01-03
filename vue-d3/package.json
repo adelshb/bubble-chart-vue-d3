@@ -12,6 +12,7 @@
     "bootstrap-vue": "^2.1.0",
     "core-js": "^3.4.4",
     "d3": "^5.15.0",
+    "jquery-csv": "^1.0.8",
     "vue": "^2.6.11"
   },
   "devDependencies": {
