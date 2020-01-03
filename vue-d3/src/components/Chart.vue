@@ -1,13 +1,8 @@
 <template>
   <div>
     <h1>Chart</h1>
-
-    <div v-if="benchmark_data.length >0">
-
       <div id="chart">
       </div>
-      {{ benchmark_data.length }}
-    </div>
   </div>
 </template>
 
@@ -37,6 +32,8 @@ export default {
     }
   },  
   mounted: function() {
+    console.log("mounting child...")
+
     this.svgContainer = d3.select("#chart")
       .append("svg")
       .attr("width", (this.settings.width + this.settings.margin.left + this.settings.margin.right))
@@ -44,15 +41,14 @@ export default {
     this.svgContainer.append("g")
       .attr("transform", "translate(" + this.settings.margin.left + "," + (this.settings.height + this.settings.margin.top) + ")")
       .call(d3.axisBottom(this.xScale))
-    console.log("mounting child")
-    // this.svgContainer.append("g")
-    //   .attr("transform", "translate(" + this.settings.margin.left + "," + this.settings.margin.top + ")")
-    //   .call(d3.axisLeft(this.yScale));
+    this.svgContainer.append("g")
+      .attr("transform", "translate(" + this.settings.margin.left + "," + this.settings.margin.top + ")")
+      .call(d3.axisLeft(this.yScale));
 
-    // this.chartWrapper = this.svgContainer
-    //   .append("g")
-    //   .attr("class", "chordWrapper")
-    //   .attr("transform", "translate(" + this.settings.margin.left + "," + this.settings.margin.top + ")");
+    this.chartWrapper = this.svgContainer
+      .append("g")
+      .attr("class", "chordWrapper")
+      .attr("transform", "translate(" + this.settings.margin.left + "," + this.settings.margin.top + ")");
     },
   computed: {
     avg_dom: function(){
