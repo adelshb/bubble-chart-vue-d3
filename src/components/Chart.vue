@@ -12,7 +12,9 @@ import * as d3 from "d3";
 export default {
   name: 'Chart',
   props: {
-    spotify_top50_2019: Array,
+    benchmarks_data: Array,
+    benchmarks_data_chart: Array,
+    colorScale: null,
     },
   data: function() {
     return {
@@ -28,11 +30,14 @@ export default {
       opacityCircles: 0.6,
       },
       svgContainer: Object,
-      chartWrapper: Object
+      chartWrapper: Object,
+      key_x: "avg",
+      key_y: "parameters",
+      key_r: "depth_multiplier",
     }
-  },  
+  },
   mounted: function() {
-
+    
     this.svgContainer = d3.select("#chart")
       .append("svg")
       .attr("width", (this.settings.width + this.settings.margin.left + this.settings.margin.right))
@@ -40,14 +45,14 @@ export default {
 
     const xScale = d3.scaleLinear()
       .range([0, this.settings.width])
-      .domain(this.key_dom("Popularity"))
+      .domain(this.key_dom(this.key_x))
     this.svgContainer.append("g")
       .attr("transform", "translate(" + this.settings.margin.left + "," + (this.settings.height + this.settings.margin.top) + ")")
       .call(d3.axisBottom(xScale))
 
     const yScale = d3.scaleLinear()
       .range([this.settings.height, 0])
-      .domain(this.key_dom("Length."))
+      .domain(this.key_dom(this.key_y))
     this.svgContainer.append("g")
       .attr("transform", "translate(" + this.settings.margin.left + "," + this.settings.margin.top + ")")
       .call(d3.axisLeft(yScale));
@@ -78,45 +83,38 @@ export default {
           .attr("y", this.settings.height + this.settings.margin.top)
           .attr("dy", "1em")
           .style("text-anchor", "middle")
-          .text("Popularity");
+          .text("Average Time");
     this.chartWrapper.append("text")
           .attr("transform", "rotate(-90)")
           .attr("y", 0 - this.settings.margin.left)
           .attr("x", 0 - (this.settings.height / 2))
           .attr("dy", "1em")
           .style("text-anchor", "middle")
-          .text("Length");
+          .text("# Parameters");
 
     const rScale = d3.scaleLinear()
-			.range([5,15])
-      .domain(this.key_dom("Beats.Per.Minute"))
+			.range([5,12])
+      .domain(this.key_dom(this.key_r))
 
-    var colorScale = d3.scaleOrdinal(d3.schemeCategory10)
-
+    var that = this
     this.chartWrapper.append('g')
       .selectAll("dot")
-      .data(this.spotify_top50_2019)
+      .data(this.benchmarks_data_chart)
       .enter()
       .append("circle")
-        .attr("class", function(d) { return "Spotify Top50 2019" + d["Track.Name"]; })
+        .attr("class", function() { return "benchmarks" ; })//+ d[]; })
         .style("opacity", this.settings.opacityCircles)
-        .style("fill", function(d) {return colorScale(d.Genre);})
+        .style("fill", function(d) {return that.colorScale(d.input_size);})
         .style("stroke", "white")
-        .attr("cx", function(d) {return xScale(d.Popularity);})
-        .attr("cy", function(d) {return yScale(d["Length."]);})
-        .attr("r", function(d) {return rScale(d["Beats.Per.Minute"])});
-    },
-
-  computed: {
-    rScale: function (key){
-      let rScale = d3.scaleSqrt()
-        .domain(d3.extent(this.spotify_top50_2019, function(d) { return d[key];}));
-      return rScale
-    }
+        .attr("cx", function(d) {return xScale(d.avg);})
+        .attr("cy", function(d) {return yScale(d.parameters);})
+        .attr("r", function(d) {return rScale(d.depth_multiplier)});
   },
   methods: {
     key_dom: function(key){
-      return d3.extent(this.spotify_top50_2019, function(d) { return parseFloat(d[key]) ; })
+      var dom = d3.extent(this.benchmarks_data, function(d) { return parseFloat(d[key]) ; })
+      return dom
+      
     },
   }
 }

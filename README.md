@@ -1,4 +1,4 @@
-# Responsive dataviz with D3.js and Vue.JS
+# Responsive Bubble chart with Vue.js and D3.js
 
 ## Project setup
 ```
@@ -14,3 +14,6 @@ npm run serve
 ```
 npm run build
 ```
+
+## License
+[MIT](http://github.com/adelshb/vue-d3/blob/master/LICENSE)
