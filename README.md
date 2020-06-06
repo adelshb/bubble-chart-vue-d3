@@ -1,4 +1,4 @@
-# vue-d3
+# Responsive dataviz with D3.js and Vue.JS 
 
 ## Project setup
 ```
