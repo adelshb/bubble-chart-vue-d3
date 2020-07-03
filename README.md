@@ -2,7 +2,7 @@
 
 ## Data Visualization
 
-![Example][example.png]
+<img src="example.png" alt="screenshot"/>
 
 ## Project setup
 ```
