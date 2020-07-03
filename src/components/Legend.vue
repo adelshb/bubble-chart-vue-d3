@@ -1,10 +1,10 @@
 <template>
   <div>
-    <h1>Legend</h1>
+    <h2>Legend</h2>
     Click on the legend elements
     <ul class="removeBulletAddTick">
       <li 
-        v-for="(input, index) in input_size" 
+        v-for="(input, index) in legend_class" 
         :key="`input-${index}`"
       >
 
@@ -12,7 +12,7 @@
           @click="sendFilterInput(input, index)"
         >
           <svg width="20" height="20">
-            <rect :style="cssRectFill(input)" width="20" height="30"/>
+            <rect :style="cssRectFill(input)" width="20" height="20"/>
           </svg>
           {{ input }}
         </div>
@@ -28,18 +28,18 @@
 export default {
   name: 'leg',
   props: {
-    benchmarks_data: Array,
+    data: Array,
     colorScale: null,
     },
   data: function() {
     return {
-      input_size: [],
+      legend_class: [],
       clickInput: [],
     }
   },
   created: function() {
-    this.input_size = this.benchmarks_data.map(a => a.input_size).filter((x, i, a) => a.indexOf(x) == i).sort(function(a, b){return parseFloat(a)-parseFloat(b)});
-    this.clickInput = new Array(this.input_size.length).fill(false)
+    this.legend_class = this.data.map(a => a.Genre).filter((x, i, a) => a.indexOf(x) == i).sort(function(a, b){return parseFloat(a)-parseFloat(b)});
+    this.clickInput = new Array(this.legend_class.length).fill(false)
   },
   mounted: function() {
   },

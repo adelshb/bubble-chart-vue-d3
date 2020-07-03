@@ -1,5 +1,9 @@
 # Responsive Bubble chart with Vue.js and D3.js
 
+## Data Visualization
+
+![Example][example.png]
+
 ## Project setup
 ```
 npm install

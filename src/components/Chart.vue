@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Chart</h1>
+    <h2>Chart</h2>
       <div id="chart">
       </div>
   </div>
@@ -12,8 +12,8 @@ import * as d3 from "d3";
 export default {
   name: 'Chart',
   props: {
-    benchmarks_data: Array,
-    benchmarks_data_chart: Array,
+    data: Array,
+    data_chart: Array,
     colorScale: null,
     },
   data: function() {
@@ -31,9 +31,9 @@ export default {
       },
       svgContainer: Object,
       chartWrapper: Object,
-      key_x: "avg",
-      key_y: "parameters",
-      key_r: "depth_multiplier",
+      key_x: "Danceability",
+      key_y: "Popularity",
+      key_r: "Beats.Per.Minute",
     }
   },
   mounted: function() {
@@ -83,14 +83,14 @@ export default {
           .attr("y", this.settings.height + this.settings.margin.top)
           .attr("dy", "1em")
           .style("text-anchor", "middle")
-          .text("Average Time");
+          .text("Danceability");
     this.chartWrapper.append("text")
           .attr("transform", "rotate(-90)")
           .attr("y", 0 - this.settings.margin.left)
           .attr("x", 0 - (this.settings.height / 2))
           .attr("dy", "1em")
           .style("text-anchor", "middle")
-          .text("# Parameters");
+          .text("Popularity");
 
     const rScale = d3.scaleLinear()
 			.range([5,12])
@@ -99,20 +99,20 @@ export default {
     var that = this
     this.chartWrapper.append('g')
       .selectAll("dot")
-      .data(this.benchmarks_data_chart)
+      .data(this.data_chart)
       .enter()
       .append("circle")
-        .attr("class", function() { return "benchmarks" ; })//+ d[]; })
+        .attr("class", function() { return "Spotify" ; })//+ d[]; })
         .style("opacity", this.settings.opacityCircles)
-        .style("fill", function(d) {return that.colorScale(d.input_size);})
+        .style("fill", function(d) {return that.colorScale(d.Genre);})
         .style("stroke", "white")
-        .attr("cx", function(d) {return xScale(d.avg);})
-        .attr("cy", function(d) {return yScale(d.parameters);})
-        .attr("r", function(d) {return rScale(d.depth_multiplier)});
+        .attr("cx", function(d) {return xScale(d.Danceability);})
+        .attr("cy", function(d) {return yScale(d.Popularity);})
+        .attr("r", function(d) {return rScale(d["Beats.Per.Minute"])});
   },
   methods: {
     key_dom: function(key){
-      var dom = d3.extent(this.benchmarks_data, function(d) { return parseFloat(d[key]) ; })
+      var dom = d3.extent(this.data, function(d) { return parseFloat(d[key]) ; })
       return dom
       
     },

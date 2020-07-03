@@ -1,21 +1,22 @@
 <template>
   <div id="app">
+    <h1>Spotify Top50 of 2019</h1>
     <b-container class="bv-example-row">
       <b-row>
         <b-col >
           <Chart 
-            v-if="benchmarks_data_chart.length > 0"
-            :benchmarks_data="benchmarks_data"
-            :benchmarks_data_chart="benchmarks_data_chart"
+            v-if="data_chart.length > 0"
+            :data="data"
+            :data_chart="data_chart"
             :colorScale="colorScale"
             :key="chartReloadKey"
           />
         </b-col>
-        <b-col sm="2">
+        <b-col sm="3">
           <Legend 
-            v-if="benchmarks_data.length > 0"
-            :benchmarks_data="benchmarks_data"
-            :input_size="input_size"
+            v-if="data.length > 0"
+            :data="data"
+            :legend_class="legend_class"
             :colorScale="colorScale"
             @inputChange="filterInput"
             @inputChangeBack="filterInputBack"
@@ -40,9 +41,9 @@ export default {
   },
   data: function(){
     return {
-      benchmarks_data: [],
-      benchmarks_data_chart: [],
-      input_size: [],
+      data: [],
+      data_chart: [],
+      legend_class: [],
       chartReloadKey: 0,
       colorScale: null,
     }
@@ -50,22 +51,22 @@ export default {
   created: function() {
     var that = this 
 
-    d3.csv("benchmark.csv",
+    d3.csv("spotify_top50_2019.csv",
       function(data) {  
-        that.benchmarks_data.push(data)
+        that.data.push(data)
       }
     );
-    this.benchmarks_data_chart = this.benchmarks_data
-    this.colorScale = d3.scaleOrdinal(d3.schemeCategory10)
-    this.benchmarks_data_chart = this.benchmarks_data
+    this.data_chart = this.data
+    this.colorScale = d3.scaleOrdinal(d3.schemeSet3)
+    this.data_chart = this.data
   },
   methods: {
     filterInput (input) {
-      this.benchmarks_data_chart = this.benchmarks_data_chart.filter(function(d){return d.input_size != input;})
+      this.data_chart = this.data_chart.filter(function(d){return d.Genre != input;})
       this.chartReloadKey += 1
     },
     filterInputBack (input) {
-      this.benchmarks_data_chart = this.benchmarks_data_chart.concat(this.benchmarks_data.filter(function(d){return d.input_size == input;}))
+      this.data_chart = this.data_chart.concat(this.data.filter(function(d){return d.Genre == input;}))
       this.chartReloadKey += 1
     },
   }
